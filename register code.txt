@@ -1,0 +1,50 @@
+try
+{
+    if (reg_UName_tb.Text != "" && reg_Pass_tb.Text != "" && reg_CPass_tb.Text != "" && reg_Email_tb.Text != "" && reg_mobilenum_tb.Text != "")
+    {
+        SqlConnection con = new SqlConnection(@"Data Source=MS;Initial Catalog=EMP_MGM;Integrated Security=True");
+        con.Open();
+        SqlCommand cmd = new SqlCommand("sp_register2", con);
+        cmd.CommandType = CommandType.StoredProcedure;
+
+        SqlParameter p1 = new SqlParameter("@User_Name", SqlDbType.VarChar);
+        cmd.Parameters.Add(p1).Value = reg_UName_tb.Text;
+
+        SqlParameter p2 = new SqlParameter("@Password", SqlDbType.VarChar);
+        cmd.Parameters.Add(p2).Value = reg_Pass_tb.Text;
+
+        SqlParameter p3 = new SqlParameter("@CPassword", SqlDbType.VarChar);
+        cmd.Parameters.Add(p3).Value = reg_CPass_tb.Text;
+
+        SqlParameter p4 = new SqlParameter("@Email", SqlDbType.VarChar);
+        cmd.Parameters.Add(p4).Value = reg_Email_tb.Text;
+
+        SqlParameter p5 = new SqlParameter("@Mobile_Num", SqlDbType.VarChar);
+        cmd.Parameters.Add(p5).Value = reg_mobilenum_tb.Text;
+
+        int a = cmd.ExecuteNonQuery();
+
+        if (a > 0)
+        {
+            MessageBox.Show("Registered Successfully");
+        }
+        else
+        {
+            MessageBox.Show("Registration Failed");
+        }
+        con.Close();
+
+        if (reg_Pass_tb.Text != reg_CPass_tb.Text)
+        {
+            MessageBox.Show("Password and Confirm Password do not match.");
+        }
+        else
+        {
+            MessageBox.Show("Please fill in all the required fields.");
+        }
+    }
+}
+catch (Exception ex)
+{
+    MessageBox.Show(ex.Message);
+}
